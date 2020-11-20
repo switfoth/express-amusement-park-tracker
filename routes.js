@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const app = express();
+const environment = require('./config');
 
-app.set("view engine", "pug")
-
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.render('index', {title: "Home"})
-})
+});
 
-const port = 8080
-
-app.listen(port)
+if (environment !== 'production') {
+    router.get('/error-test', () => {
+        throw new Error('This is a test error');
+    });
+}
+module.exports = router;
